@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+netmon_log.csv
+netmon_log.csv.old
+*.log
+.DS_Store
+.idea/
+.vscode/

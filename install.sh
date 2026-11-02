@@ -7,18 +7,17 @@ if ! command -v python3 >/dev/null 2>&1; then
     exit 1
 fi
 
-# tkinter нужен для окна
+# tkinter нужен только для окна; терминальный режим работает и без него.
 if ! python3 -c "import tkinter" >/dev/null 2>&1; then
-    echo "Ставлю tkinter (понадобится пароль sudo)..."
+    echo "Ставлю tkinter для графического окна (понадобится пароль sudo)..."
     if command -v pacman >/dev/null 2>&1; then
-        sudo pacman -S --needed tk
+        sudo pacman -S --needed tk || echo "tkinter не установлен — окно не запустится, но netmon --cli работает."
     elif command -v apt >/dev/null 2>&1; then
-        sudo apt install -y python3-tk
+        sudo apt install -y python3-tk || echo "tkinter не установлен — окно не запустится, но netmon --cli работает."
     elif command -v dnf >/dev/null 2>&1; then
-        sudo dnf install -y python3-tkinter
+        sudo dnf install -y python3-tkinter || echo "tkinter не установлен — окно не запустится, но netmon --cli работает."
     else
-        echo "Не знаю твой менеджер пакетов, поставь tkinter для python3 вручную." >&2
-        exit 1
+        echo "Не знаю твой менеджер пакетов. Терминальный режим будет работать и так." >&2
     fi
 fi
 
@@ -27,10 +26,19 @@ BIN="$HOME/.local/bin"
 APPS="$HOME/.local/share/applications"
 mkdir -p "$BIN" "$APPS"
 
-cp "$HERE/netmon.py" "$BIN/netmon.py"
-chmod +x "$BIN/netmon.py"
+# Основная команда: netmon
+install -m 755 "$HERE/netmon.py" "$BIN/netmon"
+# Совместимость со старым запуском: python3 ~/.local/bin/netmon.py
+ln -sf "$BIN/netmon" "$BIN/netmon.py"
 
-printf '[Desktop Entry]\nType=Application\nName=NetMon\nComment=Ping and jitter monitor\nExec=python3 %s/netmon.py\nIcon=network-wireless\nTerminal=false\nCategories=Network;Utility;\n' "$BIN" > "$APPS/netmon.desktop"
+printf '[Desktop Entry]\nType=Application\nName=NetMon\nComment=Монитор пинга, джиттера и потерь пакетов\nExec=%s/netmon\nTryExec=%s/netmon\nIcon=network-wireless\nTerminal=false\nCategories=Network;Utility;\nKeywords=ping;network;latency;jitter;\n' "$BIN" "$BIN" > "$APPS/netmon.desktop"
 command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$APPS" || true
 
-echo "Готово. Запуск: найди NetMon в меню приложений или выполни: python3 $BIN/netmon.py"
+echo "Готово."
+echo "  Окно:        netmon"
+echo "  Терминал:    netmon --cli"
+echo "  Один замер:  netmon --once"
+echo "  Ярлык:       NetMon в меню приложений"
+echo
+echo "Если команда netmon не находится, добавь в ~/.bashrc:"
+echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
