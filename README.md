@@ -7,9 +7,9 @@
 ## Установка
 
 ```
-git clone https://github.com/mazik23/netmon
-cd netmon
-bash install.sh
+   git clone https://github.com/nazarsheva02-dotcom/NetMon
+   cd NetMon
+   bash install.sh
 ```
 
 Скрипт поставит tkinter (Arch, Debian/Ubuntu, Fedora), скопирует программу в `~/.local/bin` и добавит ярлык NetMon в меню приложений.
