@@ -15,10 +15,14 @@
 ## Установка
 
 ```
-git clone https://github.com/nazarsheva02-dotcom/NetMon
+git clone https://github.com/nazarsheva02-dotcom/NetMon.git netmon
 cd netmon
 bash install.sh
 ```
+
+> Важно: папка называется `NetMon` с заглавными буквами. Если клонировать без `netmon` в конце, заходить нужно через `cd NetMon`. Команда выше сразу создаёт папку `netmon` в нижнем регистре.
+
+Если при `bash install.sh` появляется `No such file or directory` — значит, вы не находитесь в папке проекта. Проверить: `ls install.sh`, перейти: `cd ~/NetMon` или `cd ~/netmon`.
 
 Скрипт:
 
