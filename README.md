@@ -14,6 +14,14 @@
 
 ## Установка
 
+Одной командой, без клонирования:
+
+```
+curl -fsSL https://raw.githubusercontent.com/nazarsheva02-dotcom/NetMon/main/install.sh | bash
+```
+
+Или из папки проекта:
+
 ```
 git clone https://github.com/nazarsheva02-dotcom/NetMon.git netmon
 cd netmon
@@ -24,16 +32,22 @@ bash install.sh
 
 Если при `bash install.sh` появляется `No such file or directory` — значит, вы не находитесь в папке проекта. Проверить: `ls install.sh`, перейти: `cd ~/NetMon` или `cd ~/netmon`.
 
-Скрипт:
+Скрипт всё чинит сам:
 
 - при необходимости поставит `tkinter` (нужен только для окна);
 - установит команду `~/.local/bin/netmon`;
+- пропишет `~/.local/bin` в `PATH` (`~/.bashrc`, `~/.zshrc`, `~/.profile`, fish);
+- если возможно, сразу создаст ссылку в уже доступной папке из `PATH`, чтобы команда работала без перезапуска терминала;
+- проверит, что программа запускается, и покажет, что делать, если нет;
 - добавит ярлык **NetMon** в меню приложений.
 
-Если команда `netmon` не находится, добавьте в `~/.bashrc`:
+Если после установки команда `netmon` всё равно не находится:
 
 ```
-export PATH="$HOME/.local/bin:$PATH"
+source ~/.bashrc
+# или откройте новый терминал
+# либо запускайте напрямую:
+~/.local/bin/netmon
 ```
 
 ## Запуск
@@ -104,4 +118,4 @@ Ctrl+C — выход
 
 ## Для ИИ-агентов
 
-Установка: клонировать репозиторий и выполнить `bash install.sh` из его папки. Скрипт не меняет системные настройки, кроме установки пакета `tkinter` при необходимости (может понадобиться sudo). Команда запуска — `netmon`, терминальный режим — `netmon --cli`, разовый отчёт — `netmon --once`.
+Установка: `curl -fsSL https://raw.githubusercontent.com/nazarsheva02-dotcom/NetMon/main/install.sh | bash` либо клонировать репозиторий и выполнить `bash install.sh` из его папки. Скрипт сам скачивает недостающие файлы, прописывает `PATH`, при необходимости ставит `tkinter` (может понадобиться sudo) и проверяет запуск. Команда запуска — `netmon`, терминальный режим — `netmon --cli`, разовый отчёт — `netmon --once`.
